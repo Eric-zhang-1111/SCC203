@@ -182,7 +182,7 @@ class ICMPPing(NetworkApplication):
         # 4. Close ICMP socket
         icmpSocket.close()
         # 5. Print out the delay (and other relevant details) using the printOneResult method, below is just an example.
-        self.printOneResult(destinationAddress, packetSize, timeOfReceipt-timeOfSending, sequenceNumber, TTL,args.hostname) 
+        self.printOneResult(destinationAddress, packetSize, (timeOfReceipt-timeOfSending)*1000, sequenceNumber, TTL,args.hostname) 
 
 
     def __init__(self, args):
