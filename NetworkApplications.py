@@ -211,7 +211,7 @@ class Traceroute(NetworkApplication):
             return
         self.mySocket.settimeout(args.timeout)
         self.packetID=os.getpid
-        DoTraceRoutine()
+        DoTraceRoute()
 
     def DoTraceRoute(self):
         #3. init parameter
