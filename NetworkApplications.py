@@ -193,6 +193,7 @@ class ICMPPing(NetworkApplication):
         for i in range(args.count):
         # 3. Call doOnePing function, approximately every second, below is just an example
                 self.doOnePing(destinationAddress, os.getpid(), 1, args.timeout)
+                time.sleep(1)
 
 class Traceroute(NetworkApplication):
 
