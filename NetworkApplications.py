@@ -226,7 +226,7 @@ class Traceroute(NetworkApplication):
             self.TTL+=1
             self.mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, self.TTL)
             stop = self.doOneTraceRouteIteration()
-            self.mySocket.bind(("", port))
+            
     def doOneTraceRouteIteration(self):
         recPackets=["","",""]
         recAddress=["","",""]
@@ -239,6 +239,7 @@ class Traceroute(NetworkApplication):
                 self.sendICMP()
             elif self.protocol == socket.IPPROTO_UDP:
                 self.sendUDP()
+                print("success")
             else:
                 print("error")
                 return
