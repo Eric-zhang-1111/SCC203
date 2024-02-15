@@ -232,7 +232,7 @@ class Traceroute(NetworkApplication):
         for i in range(3):
             self.seqNum+=1
             #6. send ICMP/UDP packet
-            self.sendTime[seqNum]=time.time()
+            self.sendTime[self.seqNum]=time.time()
             if self.protocol == socket.IPPROTO_ICMP:
                 self.sendICMP()
             elif self.protocol == socket.IPPROTO_UDP:
