@@ -226,7 +226,7 @@ class Traceroute(NetworkApplication):
             #5. change TTL using setsockopt
             self.TTL+=1
             self.mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, self.TTL)
-            stop = doOneTraceRouteIteration()
+            stop = self.doOneTraceRouteIteration()
             
     def doOneTraceRouteIteration(self):
         for i in range(3):
