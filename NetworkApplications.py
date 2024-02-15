@@ -261,7 +261,7 @@ class Traceroute(NetworkApplication):
         else:
             print("the packet went to different routers")
 
-        retuen stop
+        return stop
 
     def sendICMP(self):
         #7. build ICMP packet and send
