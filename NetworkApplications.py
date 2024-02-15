@@ -274,11 +274,9 @@ class Traceroute(NetworkApplication):
         header = struct.pack('!BBHHH',8,0,checksum,self.packetID,self.seqNum)
         self.mySocket.sendto(header,(self.destinationAddress,0))
     def sendUDP(self):
-        #7. build ICMP packet and send
-        header = struct.pack('!BBHHH',8,0,0,self.packetID,self.seqNum)
-        checksum=self.checksum(header)
-        header = struct.pack('!BBHHH',8,0,checksum,self.packetID,self.seqNum)
-        self.mySocket.sendto(header,(self.destinationAddress,0))
+        #8. send UDP packet
+        self.mySocket.sendto(b"", (self.destinationAddress, 33434))
+
 
             
 class WebServer(NetworkApplication):
