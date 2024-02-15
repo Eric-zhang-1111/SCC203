@@ -206,7 +206,7 @@ class Traceroute(NetworkApplication):
             self.mySocket=socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_ICMP)
         elif args.protocol=="udp":
             self.protocol=socket.IPPROTO_UDP
-            self.mySocket=socket.socket(socket.AF_INET, socket.SOCK_DGRAM）
+            self.mySocket=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         else:
             print("protocol must be icmp or udp")
             return
