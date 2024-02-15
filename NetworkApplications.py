@@ -254,7 +254,7 @@ class Traceroute(NetworkApplication):
         #11. unpack the packet. return true if the packet is send to the destination successfully
         recIcmpHeader = recPackets[0][20:28]
         icmpType, icmpCode = struct.unpack("!BB", icmp_header[0:2])
-        if icmpType==11 and icmpCode=0:
+        if icmpType==11 and icmpCode==0:
             return false
         else:
             return true
