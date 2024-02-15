@@ -249,7 +249,7 @@ class Traceroute(NetworkApplication):
             
         #10. check if the addresses are same. print result if it is
         if recAddress[0]==recAddress[1]==recAddress[2]:
-            printOneTraceRouteIteration(self.TTL,self.destinationAddress,self.measurements)
+            self.printOneTraceRouteIteration(self.TTL,self.destinationAddress,self.measurements)
         else:
             print("the packet went to different routers")
 
