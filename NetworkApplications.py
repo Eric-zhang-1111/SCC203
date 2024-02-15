@@ -243,7 +243,7 @@ class Traceroute(NetworkApplication):
                 print("error")
                 return
         #9. receive packet
-            recPackets[i],recAddress[i] = self.mySocket.recvfrom(1024)
+            recPackets[i],recAddress[i] = self.mySocket.recvfrom(2048)
             self.recTime.append(time.time())
             measurements.append((self.recTime[self.seqNum-1]-self.sendTime[self.seqNum-1])*1000)
 
