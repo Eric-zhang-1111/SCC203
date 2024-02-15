@@ -257,7 +257,7 @@ class Traceroute(NetworkApplication):
             
         #10. check if the addresses are same. print result if it is
         if recAddress[0]==recAddress[1]==recAddress[2]:
-            self.printOneTraceRouteIteration(self.TTL,recAddress[0],measurements,socket.gethostbyaddr(recAddress[0]))
+            self.printOneTraceRouteIteration(self.TTL,recAddress[0],measurements,socket.gethostbyaddr(recAddress[0][0]))
         else:
             print("the packet went to different routers")
 
