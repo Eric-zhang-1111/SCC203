@@ -255,9 +255,9 @@ class Traceroute(NetworkApplication):
         recIcmpHeader = recPackets[0][20:28]
         icmpType, icmpCode = struct.unpack("!BB", icmp_header[0:2])
         if icmpType==11 and icmpCode==0:
-            return false
+            return False
         else:
-            return true
+            return True
 
     def sendICMP(self,time):
         #7. build ICMP packet and send
