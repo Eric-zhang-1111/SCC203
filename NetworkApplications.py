@@ -229,6 +229,8 @@ class Traceroute(NetworkApplication):
             stop = self.doOneTraceRouteIteration()
             
     def doOneTraceRouteIteration(self):
+        recPackets=["","",""]
+        recAddress=["","",""]
         for i in range(3):
             self.seqNum+=1
             #6. send ICMP/UDP packet
