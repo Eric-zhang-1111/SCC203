@@ -251,10 +251,9 @@ class Traceroute(NetworkApplication):
         #11. unpack the packet. return true if the packet is send to the destination successfully
         recIcmpHeader = recPackets[0][20:28]
         icmpType, icmpCode = struct.unpack("!BB", recIcmpHeader[0:2])
+        stop = True
         if icmpType==11 and icmpCode==0:
             stop = False
-        else:
-            stop = True
             
         #10. check if the addresses are same. print result if it is
         if recAddress[0]==recAddress[1]==recAddress[2]:
