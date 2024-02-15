@@ -238,7 +238,7 @@ class Traceroute(NetworkApplication):
             if self.protocol == socket.IPPROTO_ICMP:
                 self.sendICMP()
             elif self.protocol == socket.IPPROTO_UDP:
-                pass
+                self.sendUDP()
             else:
                 print("error")
                 return
@@ -276,7 +276,6 @@ class Traceroute(NetworkApplication):
     def sendUDP(self):
         #8. send UDP packet
         self.mySocket.sendto(b"", (self.destinationAddress, 33434))
-        pass
 
 
             
