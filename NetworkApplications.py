@@ -222,7 +222,7 @@ class Traceroute(NetworkApplication):
         self.recTime=[]
         self.measurements=[]
         #4. start TraceRoute Iteration
-        while not stop and TTL<64:
+        while not stop and self.TTL<64:
             #5. change TTL using setsockopt
             self.TTL+=1
             self.mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, self.TTL)
