@@ -275,7 +275,7 @@ class Traceroute(NetworkApplication):
         self.mySocket.sendto(header,(self.destinationAddress,0))
     def sendUDP(self):
         #8. send UDP packet
-        self.mySocket.sendto(struct.pack('!d', timestamp), (self.destinationAddress, 33434))
+        self.mySocket.sendto(struct.pack('!d', time.time()), (self.destinationAddress, 33434))
 
 
             
