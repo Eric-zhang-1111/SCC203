@@ -52,8 +52,6 @@ def setupArgumentParser() -> argparse.Namespace:
         parser_x.set_defaults(func=Proxy)
 
         args = parser.parse_args()
-        args.timeout=2
-        args.count=10
         return args
 
 
