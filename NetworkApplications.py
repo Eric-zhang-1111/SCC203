@@ -215,7 +215,7 @@ class Traceroute(NetworkApplication):
 
     def DoTraceRoute(self):
         #3. init parameter
-        stop = false
+        stop = False
         self.seqNum=0
         self.TTL=0
         self.sendTime=[]#length is seqNum
