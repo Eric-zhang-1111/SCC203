@@ -210,7 +210,7 @@ class Traceroute(NetworkApplication):
             print("protocol must be icmp or udp")
             return
         self.mySocket.settimeout(args.timeout)
-        self.packetID=os.getpid
+        self.packetID=os.getpid()
         self.DoTraceRoute()
 
     def DoTraceRoute(self):
