@@ -262,7 +262,7 @@ class Traceroute(NetworkApplication):
             except socket.herror as e:
                 hostName = ""
                 print("unknown host name")
-            self.printOneTraceRouteIteration(self.TTL,recAddress[0],measurements,hostName)
+            self.printOneTraceRouteIteration(self.TTL,recAddress[0][0],measurements,hostName)
         else:
             print("the packet went to different routers")
 
