@@ -209,7 +209,7 @@ class Traceroute(NetworkApplication):
         else:
             print("protocol must be icmp or udp")
             return
-        self.mySocket.settimeout(args.timeOut)
+        self.mySocket.settimeout(args.timeout)
         self.packetID=os.getpid
         DoTraceRoutine()
 
