@@ -142,7 +142,6 @@ class ICMPPing(NetworkApplication):
                 ID,#Identifier
                 seq_num#Sequence Number
                 )
-        icmp = header + payload
         # 2. Checksum ICMP packet using given function
         checksum=self.checksum(header)
         # 3. Insert checksum into packet
@@ -219,51 +218,59 @@ class Traceroute(NetworkApplication):
         stop = false
         self.seqNum=0
         self.TTL=0
+        self.sendTime=[]#length is seqNum
+        self.recTime=[]
+        self.measurements=[]
         #4. start TraceRoute Iteration
         while not stop and TTL<64:
             #5. change TTL using setsockopt
             self.TTL+=1
+            self.mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, self.TTL)
             stop = doOneTraceRouteIteration()
             
     def doOneTraceRouteIteration(self):
         for i in range(3):
             self.seqNum+=1
-            #6. send ICMP packet
+            #6. send ICMP/UDP packet
+            self.sendTime[seqNum]=time.time()
             if self.protocol == socket.IPPROTO_ICMP:
-                pass
-            #7. send UDP packet
+                self.sendICMP()
             elif self.protocol == socket.IPPROTO_UDP:
                 pass
             else:
                 print("error")
                 return
+        #9. receive packet
+            recPackets[i],recAddress[i] = self.mySocket.recvfrom(1024)
+            self.recTime[seqNum] = time.time()
+            self.measurements[i]=self.recTime[seqNum]-self.sendTime[seqNum]
             
-    def sendICMP(self):
-        #8. build ICMP header
-        payload = struct.pack('!d',time.time())
+        #10. check if the addresses are same. print result if it is
+        if recAddress[0]==recAddress[1]==recAddress[2]:
+            printOneTraceRouteIteration(self.TTL,self.destinationAddress,self.measurements)
+        else:
+            print("the packet went to different routers")
+
+        #11. unpack the packet. return true if the packet is send to the destination successfully
+        recIcmpHeader = recPackets[0][20:28]
+        icmpType, icmpCode = struct.unpack("!BB", icmp_header[0:2])
+        if icmpType==11 and icmpCode=0:
+            return false
+        else:
+            return true
+
+    def sendICMP(self,time):
+        #7. build ICMP packet and send
+        #payload = struct.pack('!d',time)
         header = struct.pack('!BBHHH',8,0,0,self.packetID,self.seqNum)
-        
-        pass
-    
+        checksum=self.checksum(header)
+        header = struct.pack('!BBHHH',8,0,checksum,self.packetID,self.seqNum)
+        self.mySocket.sendto(header,(self.destinationAddress,0))
     def sendUDP(self):
-        
+        #8. send UDP packet
         pass
 
 
-            #5. wait
-
-            #6.receive
-
-            #7. unpack
-
-            #8. check if identifier is same
-
-            #9. chekc if it reach the destination
-
-            #10. print the result using printOneTraceRouteIteration
-
-            #11. return true if it reach the destination
-        
             
 class WebServer(NetworkApplication):
 
