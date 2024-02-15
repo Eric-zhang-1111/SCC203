@@ -144,7 +144,7 @@ class ICMPPing(NetworkApplication):
                 )
         icmp = header + payload
         # 2. Checksum ICMP packet using given function
-        checksum=self.checksum(icmp)
+        checksum=self.checksum(header)
         # 3. Insert checksum into packet
         header = struct.pack(
                 '!BBHHH',
@@ -196,10 +196,75 @@ class ICMPPing(NetworkApplication):
                 time.sleep(1)
 
 class Traceroute(NetworkApplication):
-
     def __init__(self, args):
+        #1. get destination address
         print('Traceroute to: %s...' % (args.hostname))
+        self.destinationAddress = socket.gethostbyname(args.hostname)
+        #2. instantiate my socket
+        if args.protocol=="icmp":
+            self.protocol=socket.IPPROTO_ICMP
+            self.mySocket=socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_ICMP)
+        elif args.protocol=="udp":
+            self.protocol=socket.IPPROTO_UDP
+            self.mySocket=socket.socket(socket.AF_INET, socket.SOCK_DGRAM）
+        else:
+            print("protocol must be icmp or udp")
+            return
+        socket.settimeout(args.timeOut)
+        self.packetID=os.getpid
+        DoTraceRoutine()
 
+    def DoTraceRoute(self):
+        #3. init parameter
+        stop = false
+        self.seqNum=0
+        self.TTL=0
+        #4. start TraceRoute Iteration
+        while not stop and TTL<64:
+            #5. change TTL using setsockopt
+            self.TTL+=1
+            stop = doOneTraceRouteIteration()
+            
+    def doOneTraceRouteIteration(self):
+        for i in range(3):
+            self.seqNum+=1
+            #6. send ICMP packet
+            if self.protocol == socket.IPPROTO_ICMP:
+                pass
+            #7. send UDP packet
+            elif self.protocol == socket.IPPROTO_UDP:
+                pass
+            else:
+                print("error")
+                return
+            
+    def sendICMP(self):
+        #8. build ICMP header
+        payload = struct.pack('!d',time.time())
+        header = struct.pack('!BBHHH',8,0,0,self.packetID,self.seqNum)
+        
+        pass
+    
+    def sendUDP(self):
+        
+        pass
+
+
+            #5. wait
+
+            #6.receive
+
+            #7. unpack
+
+            #8. check if identifier is same
+
+            #9. chekc if it reach the destination
+
+            #10. print the result using printOneTraceRouteIteration
+
+            #11. return true if it reach the destination
+        
+            
 class WebServer(NetworkApplication):
 
     def handleRequest(tcpSocket):
