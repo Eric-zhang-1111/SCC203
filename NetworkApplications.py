@@ -130,7 +130,7 @@ class ICMPPing(NetworkApplication):
         # 6. Return time of receipt, TTL, packetSize, sequence number
                 return timeOfReceipt,rec_ip_TTL,rec_ip_totalLength,rec_icmp_sequence
 
-    def sendOnePing(self, icmpSocket, destinationAddress, ID):
+    def sendOnePing(self, icmpSocket, destinationAddress, ID, seq_num):
         # 1. Build ICMP header
         timeOfSending=time.time()
         payload = struct.pack('!d',timeOfSending)#! is network (= big-endian),d is double(8)
@@ -140,7 +140,7 @@ class ICMPPing(NetworkApplication):
                 0,#code field
                 0,#checksum,pseudo header's checksum is 0
                 ID,#Identifier
-                1#Sequence Number,it is 1 since only send one packet
+                seq_num#Sequence Number
                 )
         icmp = header + payload
         # 2. Checksum ICMP packet using given function
@@ -152,7 +152,7 @@ class ICMPPing(NetworkApplication):
                 0,
                 checksum,#insert the real checksum into packet
                 ID,
-                1
+                seq_num
                 )
         icmp = header + payload
         # 4. Send packet using socket
@@ -176,7 +176,7 @@ class ICMPPing(NetworkApplication):
         icmpSocket = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.getprotobyname("icmp"))
         icmpSocket.settimeout(timeout)
         # 2. Call sendOnePing function
-        timeOfSending = self.sendOnePing(icmpSocket,destinationAddress, packetID)
+        timeOfSending = self.sendOnePing(icmpSocket,destinationAddress, packetID,seq_num)
         # 3. Call receiveOnePing function
         timeOfReceipt,TTL,packetSize,sequenceNumber=self.receiveOnePing(icmpSocket,destinationAddress,packetID,timeout)
         # 4. Close ICMP socket
@@ -192,7 +192,7 @@ class ICMPPing(NetworkApplication):
         # 2. Repeat below args.count times
         for i in range(args.count):
         # 3. Call doOnePing function, approximately every second, below is just an example
-                self.doOnePing(destinationAddress, os.getpid(), 1, args.timeout)
+                self.doOnePing(destinationAddress, os.getpid(), i+1, args.timeout)
                 time.sleep(1)
 
 class Traceroute(NetworkApplication):
