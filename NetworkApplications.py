@@ -245,7 +245,7 @@ class Traceroute(NetworkApplication):
         #9. receive packet
             recPackets[i],recAddress[i] = self.mySocket.recvfrom(1024)
             self.recTime.append(time.time())
-            measurements.append(self.recTime[self.seqNum-1]-self.sendTime[self.seqNum-1])
+            measurements.append((self.recTime[self.seqNum-1]-self.sendTime[self.seqNum-1])*1000)
             
         #10. check if the addresses are same. print result if it is
         if recAddress[0]==recAddress[1]==recAddress[2]:
