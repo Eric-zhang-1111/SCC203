@@ -220,7 +220,7 @@ class Traceroute(NetworkApplication):
         self.TTL=0
         self.sendTime=[]#length is seqNum
         self.recTime=[]
-        self.measurements=[]
+        self.measurements=[0,0,0]
         #4. start TraceRoute Iteration
         while not stop and self.TTL<64:
             #5. change TTL using setsockopt
@@ -232,7 +232,7 @@ class Traceroute(NetworkApplication):
         for i in range(3):
             self.seqNum+=1
             #6. send ICMP/UDP packet
-            self.sendTime[self.seqNum]=time.time()
+            self.sendTime.append(time.time())
             if self.protocol == socket.IPPROTO_ICMP:
                 self.sendICMP()
             elif self.protocol == socket.IPPROTO_UDP:
@@ -242,7 +242,7 @@ class Traceroute(NetworkApplication):
                 return
         #9. receive packet
             recPackets[i],recAddress[i] = self.mySocket.recvfrom(1024)
-            self.recTime[seqNum] = time.time()
+            self.recTime.append(time.time())
             self.measurements[i]=self.recTime[seqNum]-self.sendTime[seqNum]
             
         #10. check if the addresses are same. print result if it is
