@@ -224,9 +224,9 @@ class Traceroute(NetworkApplication):
         while not stop and self.TTL<64:
             #5. change TTL using setsockopt
             self.TTL+=1
-            self.mySocket.setsockopt(socket.SOL_IP, socket.IP_TTL, self.TTL)
+            self.mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, self.TTL)
             stop = self.doOneTraceRouteIteration()
-            
+            self.mySocket.bind(("", port))
     def doOneTraceRouteIteration(self):
         recPackets=["","",""]
         recAddress=["","",""]
