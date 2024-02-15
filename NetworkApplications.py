@@ -246,20 +246,23 @@ class Traceroute(NetworkApplication):
             recPackets[i],recAddress[i] = self.mySocket.recvfrom(1024)
             self.recTime.append(time.time())
             measurements.append((self.recTime[self.seqNum-1]-self.sendTime[self.seqNum-1])*1000)
-            
-        #10. check if the addresses are same. print result if it is
-        if recAddress[0]==recAddress[1]==recAddress[2]:
-            self.printOneTraceRouteIteration(self.TTL,self.destinationAddress,measurements)
-        else:
-            print("the packet went to different routers")
+
 
         #11. unpack the packet. return true if the packet is send to the destination successfully
         recIcmpHeader = recPackets[0][20:28]
         icmpType, icmpCode = struct.unpack("!BB", recIcmpHeader[0:2])
         if icmpType==11 and icmpCode==0:
-            return False
+            stop = False
         else:
-            return True
+            stop = True
+            
+        #10. check if the addresses are same. print result if it is
+        if recAddress[0]==recAddress[1]==recAddress[2]:
+            self.printOneTraceRouteIteration(self.TTL,recAddress[0],measurements)
+        else:
+            print("the packet went to different routers")
+
+        retuen stop
 
     def sendICMP(self):
         #7. build ICMP packet and send
