@@ -259,7 +259,7 @@ class Traceroute(NetworkApplication):
         else:
             return True
 
-    def sendICMP(self,time):
+    def sendICMP(self):
         #7. build ICMP packet and send
         #payload = struct.pack('!d',time)
         header = struct.pack('!BBHHH',8,0,0,self.packetID,self.seqNum)
