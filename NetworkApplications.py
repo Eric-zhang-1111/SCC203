@@ -359,7 +359,18 @@ class Proxy(NetworkApplication):
         except IndexError:
             tcpSocket.close()
             return
+        #5. checks if the requested object is cached. forward request if it is not cached
+        response=forwardRequest(request_bytes)
         
+        #9. store the content of the response locally
+        
+
+        #10. send the response back to the client
+        tcpSocket.sendall(response)
+        tcpSocket.close()
+        proxy_socket.close()
+    def forwardRequest(request_bytes):
+        request=request_bytes.decode()
         try:
             host_index = request.index("Host:") + 6
             host_end_index = request.index("\r\n", host_index)
@@ -367,7 +378,7 @@ class Proxy(NetworkApplication):
         except ValueError:
             tcpSocket.close()
             return
-        #5. create a proxy socket, connect to the server
+        #6. create a proxy socket, connect to the server
         proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         proxy_socket.connect((host, 80))
         #7. send request from proxy socket to the server
@@ -379,12 +390,7 @@ class Proxy(NetworkApplication):
             if not data:
                 break
             response += data
-        #9. store the content of the response locally
-        tcpSocket.sendall(response)
-
-        #10. send the response back to the client
-        tcpSocket.close()
-        proxy_socket.close()
+        return response
 # Do not delete or modify the code below
 if __name__ == "__main__":
     args = setupArgumentParser()
