@@ -11,7 +11,7 @@ import random
 import traceback # useful for exception handling
 import threading
 # NOTE: Do not import any other modules - the ones above should be sufficient
-import select
+#import select
 
 def setupArgumentParser() -> argparse.Namespace:
         parser = argparse.ArgumentParser(
@@ -288,23 +288,44 @@ class WebServer(NetworkApplication):
 
     def handleRequest(tcpSocket):
         # 1. Receive request message from the client on connection socket
+        request = tcpSocket.recv(1024).decode()
         # 2. Extract the path of the requested object from the message (second part of the HTTP header)
+        filename = request.split()[1]
+        if filename == '/':#Handle special circumstance
+                filename = '/index.html'
+        filepath = '.' + filename
         # 3. Read the corresponding file from disk
         # 4. Store in temporary buffer
+        try:
+            with open(filepath, 'rb') as file:
+                content = file.read()
         # 5. Send the correct HTTP response error
+        except FileNotFoundError:
+            tcpSocket.send(b'HTTP/1.1 404 Not Found\r\n\r\n')
+            tcpSocket.send(b'404 Not Found')
+            tcpSocket.close()
+            return
+        
         # 6. Send the content of the file to the socket
+        tcpSocket.send(b'HTTP/1.1 200 OK\r\n\r\n')
+        tcpSocket.send(content)
         # 7. Close the connection socket
-        pass
+        tcpSocket.close
 
     def __init__(self, args):
         print('Web Server starting on port: %i...' % (args.port))
         # 1. Create server socket
-        myServer = socketserver.TCPServer(("localhost", args.port), MyTCPHandler)
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 2. Bind the server socket to server address and server port
+        server_socket.bind(("localhost", args.port))
         # 3. Continuously listen for connections to server socket
+        server_socket.listen(5)
         # 4. When a connection is accepted, call handleRequest function, passing new connection socket (see https://docs.python.org/3/library/socket.html#socket.socket.accept)
+        while True:
+                connection_socket, addr = server_socket.accept()
+                self.handleRequest(connection_socket)
         # 5. Close server socket
-
+        server_socket.close()
 
 class Proxy(NetworkApplication):
 
