@@ -376,7 +376,7 @@ class Proxy(NetworkApplication):
                 response = file.read()
                 print("load cache success")
         except FileNotFoundError:
-            response=self.forwardRequest(request_bytes)
+            response=self.forwardRequest(request_bytes,host)
             #9. store the content of the response locally
             with open('./' +host+ filename, 'wb') as file:
                 file.write(response)
@@ -385,8 +385,8 @@ class Proxy(NetworkApplication):
         tcpSocket.sendall(response)
         tcpSocket.close()
         
-    def forwardRequest(self,request_bytes):
-        request=request_bytes.decode()
+    def forwardRequest(self,request_bytes,host):
+        
 
 
         #6. create a proxy socket, connect to the server
