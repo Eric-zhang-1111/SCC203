@@ -362,18 +362,18 @@ class Proxy(NetworkApplication):
         #5. checks if the requested object is cached. forward request if it is not cached
         try:
             with open(filepath, 'rb') as file:
-                    response = file.read()
+                response = file.read()
+                print("load cache success")
         except FileNotFoundError:
             response=self.forwardRequest(request_bytes)
             #9. store the content of the response locally
             with open(filepath, 'wb') as file:
-                    file.write(response)
-
-
+                file.write(response)
+            print("save cache success")
         #10. send the response back to the client
         tcpSocket.sendall(response)
         tcpSocket.close()
-        proxy_socket.close()
+        
     def forwardRequest(self,request_bytes):
         request=request_bytes.decode()
         try:
@@ -395,6 +395,7 @@ class Proxy(NetworkApplication):
             if not data:
                 break
             response += data
+        proxy_socket.close()
         return response
 # Do not delete or modify the code below
 if __name__ == "__main__":
