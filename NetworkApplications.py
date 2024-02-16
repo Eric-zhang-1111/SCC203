@@ -360,10 +360,15 @@ class Proxy(NetworkApplication):
             tcpSocket.close()
             return
         #5. checks if the requested object is cached. forward request if it is not cached
-        response=self.forwardRequest(request_bytes)
-        
-        #9. store the content of the response locally
-        
+        try:
+            with open(filepath, 'rb') as file:
+            response = file.read()
+        except FileNotFoundError:
+            response=self.forwardRequest(request_bytes)
+            #9. store the content of the response locally
+            with open(filepath, 'wb') as file:
+            file.write(response)
+
 
         #10. send the response back to the client
         tcpSocket.sendall(response)
