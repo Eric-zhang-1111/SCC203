@@ -363,6 +363,9 @@ class Proxy(NetworkApplication):
         except IndexError:
             tcpSocket.close()
             return
+        filepath='./' +host+ filename, 'rb'
+        directory = os.path.dirname(file_path)
+        os.makedirs(directory, exist_ok=True)
         try:
             host_index = request.index("Host:") + 6
             host_end_index = request.index("\r\n", host_index)
@@ -372,13 +375,13 @@ class Proxy(NetworkApplication):
             return
         #5. checks if the requested object is cached. forward request if it is not cached
         try:
-            with open('./' +host+ filename, 'rb') as file:
+            with open(filepath) as file:
                 response = file.read()
                 print("load cache success")
         except FileNotFoundError:
             response=self.forwardRequest(request_bytes,host)
             #9. store the content of the response locally
-            with open('./' +host+ filename, 'wb') as file:
+            with open(filepath) as file:
                 file.write(response)
             print("save cache success")
         #10. send the response back to the client
