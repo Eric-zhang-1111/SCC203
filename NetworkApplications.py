@@ -117,9 +117,9 @@ class ICMPPing(NetworkApplication):
         # 2. If reply received, record time of receipt, otherwise, handle timeout
         #if recv[0]==[]:
                 #return
-        #timeOfReceipt=time.time()
         # 3. Unpack the imcp and ip headers for useful information, including Identifier, TTL, sequence number 
         rec_packet,rec_address = icmpSocket.recvfrom(1024)
+        timeOfReceipt=time.time()
         rec_icmp_header = rec_packet[20:28]
         rec_ip_header = rec_packet[:20]
         rec_ip_TTL = struct.unpack('!B', rec_ip_header[8:9])[0]
