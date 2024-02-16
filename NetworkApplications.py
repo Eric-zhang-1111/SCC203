@@ -371,7 +371,7 @@ class Proxy(NetworkApplication):
         except ValueError:
             tcpSocket.close()
             return
-        filepath='./' +host+ filename, 'rb'
+        filepath='./' +host+ filename
         directory = os.path.dirname(filepath)
         os.makedirs(directory, exist_ok=True)
         #5. checks if the requested object is cached. forward request if it is not cached
