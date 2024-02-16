@@ -336,7 +336,53 @@ class Proxy(NetworkApplication):
 
     def __init__(self, args):
         print('Web Proxy starting on port: %i...' % (args.port))
+        #1. Create server socket, bind port, continuously listen
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.bind(("localhost", args.port))
+        self.server_socket.listen(5)
+        #2. when a connection is accepted, call handleRequest function
+        while True:
+            connection_socket, addr = self.server_socket.accept()
+            self.handleRequest(connection_socket)
+    def handleRequest(self,tcpSocket):
+        #3. Receive request message from client
+        request = tcpSocket.recv(1024).decode()
 
+        #4. Extract the path of the requested object
+        try:
+            filename = request.split()[1]
+            if filename == '/':
+                filename = '/index.html'
+            filepath = '.' + filename
+        except IndexError:
+            tcpSocket.close()
+            return
+        
+        try:
+            host_index = request.index("Host:") + 6
+            host_end_index = request.index("\r\n", host_index)
+            host = request[host_index:host_end_index].strip()
+        except ValueError:
+            tcpSocket.close()
+            return
+        #5. create a proxy socket, connect to the server
+        proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        proxy_socket.connect((host, 80))
+        #7. send request from proxy socket to the server
+        proxy_socket.sendall(request)
+        #8. receive the response
+        response = b""
+        while True:
+            data = proxy_socket.recv(1024)
+            if not data:
+                break
+            response += data
+        #9. store the content of the response locally
+        tcpSocket.sendall(response)
+
+        #10. send the response back to the client
+        tcpSocket.close()
+        proxy_socket.close()
 # Do not delete or modify the code below
 if __name__ == "__main__":
     args = setupArgumentParser()
