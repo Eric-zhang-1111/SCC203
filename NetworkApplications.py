@@ -351,6 +351,7 @@ class Proxy(NetworkApplication):
         request = request_bytes.decode()
 
         #4. Extract the path of the requested object
+        print(request)
         try:
             filename = request.split()[1]
             if filename == '/':
