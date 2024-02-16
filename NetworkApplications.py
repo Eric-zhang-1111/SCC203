@@ -357,22 +357,29 @@ class Proxy(NetworkApplication):
             if filename.startswith("http://"):#in case the format is like GET http://neverssl.com/ HTTP/1.1
                 filename=filename[len("http://"):]
                 host_end_index = filename.find("/")
+                hostname=
                 filename=filename[host_end_index:]
             if filename == '/':
                 filename = '/index.html'
-            filepath = '.' + filename
         except IndexError:
+            tcpSocket.close()
+            return
+        try:
+            host_index = request.index("Host:") + 6
+            host_end_index = request.index("\r\n", host_index)
+            host = request[host_index:host_end_index].strip()
+        except ValueError:
             tcpSocket.close()
             return
         #5. checks if the requested object is cached. forward request if it is not cached
         try:
-            with open(filepath, 'rb') as file:
+            with open('./' +host+ filename, 'rb') as file:
                 response = file.read()
                 print("load cache success")
         except FileNotFoundError:
             response=self.forwardRequest(request_bytes)
             #9. store the content of the response locally
-            with open(filepath, 'wb') as file:
+            with open('./' +host+ filename, 'wb') as file:
                 file.write(response)
             print("save cache success")
         #10. send the response back to the client
@@ -381,13 +388,8 @@ class Proxy(NetworkApplication):
         
     def forwardRequest(self,request_bytes):
         request=request_bytes.decode()
-        try:
-            host_index = request.index("Host:") + 6
-            host_end_index = request.index("\r\n", host_index)
-            host = request[host_index:host_end_index].strip()
-        except ValueError:
-            tcpSocket.close()
-            return
+
+
         #6. create a proxy socket, connect to the server
         proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         proxy_socket.connect((host, 80))
