@@ -286,7 +286,7 @@ class Traceroute(NetworkApplication):
             
 class WebServer(NetworkApplication):
 
-    def handleRequest(tcpSocket):
+    def handleRequest(self,tcpSocket):
         # 1. Receive request message from the client on connection socket
         request = tcpSocket.recv(1024).decode()
         # 2. Extract the path of the requested object from the message (second part of the HTTP header)
