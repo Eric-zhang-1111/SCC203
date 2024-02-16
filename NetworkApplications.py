@@ -371,7 +371,7 @@ class Proxy(NetworkApplication):
         proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         proxy_socket.connect((host, 80))
         #7. send request from proxy socket to the server
-        proxy_socket.sendall(request)
+        proxy_socket.sendall(request_bytes)
         #8. receive the response
         response = b""
         while True:
