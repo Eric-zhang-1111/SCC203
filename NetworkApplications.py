@@ -372,7 +372,7 @@ class Proxy(NetworkApplication):
             tcpSocket.close()
             return
         filepath='./' +host+ filename, 'rb'
-        directory = os.path.dirname(file_path)
+        directory = os.path.dirname(filepath)
         os.makedirs(directory, exist_ok=True)
         #5. checks if the requested object is cached. forward request if it is not cached
         try:
