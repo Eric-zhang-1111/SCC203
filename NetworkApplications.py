@@ -113,11 +113,11 @@ class ICMPPing(NetworkApplication):
 
     def receiveOnePing(self, icmpSocket, destinationAddress, ID, timeout):
         # 1. Wait for the socket to receive a reply
-        recv = select.select([icmpSocket], [], [], timeout)#wait until ready for reading\writing\exceptional condition,recv是一个返回的三元组
+        #recv = select.select([icmpSocket], [], [], timeout)#wait until ready for reading\writing\exceptional condition,recv是一个返回的三元组
         # 2. If reply received, record time of receipt, otherwise, handle timeout
-        if recv[0]==[]:
-                return
-        timeOfReceipt=time.time()
+        #if recv[0]==[]:
+                #return
+        #timeOfReceipt=time.time()
         # 3. Unpack the imcp and ip headers for useful information, including Identifier, TTL, sequence number 
         rec_packet,rec_address = icmpSocket.recvfrom(1024)
         rec_icmp_header = rec_packet[20:28]
@@ -299,6 +299,7 @@ class WebServer(NetworkApplication):
     def __init__(self, args):
         print('Web Server starting on port: %i...' % (args.port))
         # 1. Create server socket
+        myServer = socketserver.TCPServer(("localhost", args.port), MyTCPHandler)
         # 2. Bind the server socket to server address and server port
         # 3. Continuously listen for connections to server socket
         # 4. When a connection is accepted, call handleRequest function, passing new connection socket (see https://docs.python.org/3/library/socket.html#socket.socket.accept)
