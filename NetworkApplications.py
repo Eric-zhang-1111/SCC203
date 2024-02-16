@@ -369,7 +369,7 @@ class Proxy(NetworkApplication):
         tcpSocket.sendall(response)
         tcpSocket.close()
         proxy_socket.close()
-    def forwardRequest(request_bytes):
+    def forwardRequest(self,request_bytes):
         request=request_bytes.decode()
         try:
             host_index = request.index("Host:") + 6
