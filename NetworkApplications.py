@@ -354,12 +354,12 @@ class Proxy(NetworkApplication):
         print(request)
         try:
             filename = request.split()[1]
-            if filename == '/':
-                filename = '/index.html'
-            elif filename.startswith("http://"):#in case the format is like GET http://neverssl.com/ HTTP/1.1
+            if filename.startswith("http://"):#in case the format is like GET http://neverssl.com/ HTTP/1.1
                 filename=filename[len("http://"):]
                 host_end_index = filename.find("/")
                 filename=filename[host_end_index:]
+            if filename == '/':
+                filename = '/index.html'
             filepath = '.' + filename
         except IndexError:
             tcpSocket.close()
