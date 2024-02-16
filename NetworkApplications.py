@@ -342,8 +342,10 @@ class Proxy(NetworkApplication):
         self.server_socket.listen(5)
         #2. when a connection is accepted, call handleRequest function
         while True:
+            print("waiting...")
             connection_socket, addr = self.server_socket.accept()
             self.handleRequest(connection_socket)
+        server_socket.close()
     def handleRequest(self,tcpSocket):
         #3. Receive request message from client
         request = tcpSocket.recv(1024).decode()
