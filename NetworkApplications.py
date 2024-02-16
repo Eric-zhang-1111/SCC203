@@ -357,7 +357,6 @@ class Proxy(NetworkApplication):
             if filename.startswith("http://"):#in case the format is like GET http://neverssl.com/ HTTP/1.1
                 filename=filename[len("http://"):]
                 host_end_index = filename.find("/")
-                hostname=
                 filename=filename[host_end_index:]
             if filename == '/':
                 filename = '/index.html'
