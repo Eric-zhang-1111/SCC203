@@ -209,6 +209,7 @@ class Traceroute(NetworkApplication):
         else:
             print("protocol must be icmp or udp")
             return
+        self.recSocket=socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_ICMP)
         self.mySocket.settimeout(args.timeout)
         self.packetID=os.getpid()
         self.DoTraceRoute()
@@ -244,7 +245,7 @@ class Traceroute(NetworkApplication):
                 return
         #9. receive packet
             try:
-                recPackets[i],recAddress[i] = self.mySocket.recvfrom(2048)
+                recPackets[i],recAddress[i] = self.recSocket.recvfrom(1024)
             except socket.timeout:
                 print("Timeout error")
                 return
