@@ -290,10 +290,15 @@ class WebServer(NetworkApplication):
         # 1. Receive request message from the client on connection socket
         request = tcpSocket.recv(1024).decode()
         # 2. Extract the path of the requested object from the message (second part of the HTTP header)
-        filename = request.split()[1]
-        if filename == '/':#Handle special circumstance
-                filename = '/index.html'
-        filepath = '.' + filename
+        try:
+
+                filename = request.split()[1]
+                if filename == '/':#Handle special circumstance
+                        filename = '/index.html'
+                filepath = '.' + filename
+        except IndexError:
+                tcpSocket.close()
+                return
         # 3. Read the corresponding file from disk
         # 4. Store in temporary buffer
         try:
