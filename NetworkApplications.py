@@ -360,7 +360,7 @@ class Proxy(NetworkApplication):
             tcpSocket.close()
             return
         #5. checks if the requested object is cached. forward request if it is not cached
-        response=forwardRequest(request_bytes)
+        response=self.forwardRequest(request_bytes)
         
         #9. store the content of the response locally
         
